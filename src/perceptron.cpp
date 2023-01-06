@@ -21,9 +21,9 @@ perceptron::perceptron ( int32_t _row, int32_t _col, int32_t initital )
 void perceptron::sample_rectengle ( void )
 {
 	std::pair<int32_t, int32_t> tl, br;
-	tl.first = rand() % row; br.first = rand() % row;
+	tl.first = myran.get_next() % row; br.first = myran.get_next() % row;
 	if ( tl.first > br.first ) std::swap ( tl.first, br.first );
-	tl.second = rand() % col; br.second = rand() % col;
+	tl.second = myran.get_next() % col; br.second = myran.get_next() % col;
 	if ( tl.second > br.second ) std::swap ( tl.second, br.second );
 
 	clear_sample ();
@@ -34,7 +34,7 @@ void perceptron::sample_rectengle ( void )
 
 void perceptron::sample_circle ( void )
 {
-	std::pair<int32_t, int32_t> center ( rand()%row, rand()%col );
+	std::pair<int32_t, int32_t> center ( myran.get_next()%row, myran.get_next()%col );
 
 	int32_t min_dis = std::min ( center.first, center.second );
 	min_dis = std::min ( min_dis, row - center.first - 1 );
@@ -113,7 +113,7 @@ void perceptron::print_performance ( void )
 {
 	int32_t accurate = 0;
 	for ( int32_t i = 0 ; i < 100 ; ++i ) {
-		bool expected = bool ( rand() % 2 );
+		bool expected = bool ( myran.get_next() % 2 );
 		if ( expected ) sample_circle ();
 		else sample_rectengle ();
 		if ( predict_sample () == expected ) ++accurate;

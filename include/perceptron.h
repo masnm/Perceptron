@@ -1,17 +1,22 @@
 #pragma once
 
 #include <vector>
+#include <limits>
 
 #include "../include/my_sdl.h"
+#include "../include/my_random.h"
 
 class perceptron {
 
-	public:
-		std::vector<std::vector<int32_t>> layer;
+	private:
 		std::vector<std::vector<int32_t>> sample;
-		int32_t row, col;
 		// min must be negative and max must be positive
 		const int32_t WIDTH_MIN = -10, WIDTH_MAX = 10;
+		my_random myran = my_random ( 0, std::numeric_limits<int32_t>::max() );
+
+	public:
+		std::vector<std::vector<int32_t>> layer;
+		int32_t row, col;
 
 	public:
 		perceptron ( int32_t _row, int32_t _col, int32_t initital = 0 );

@@ -2,6 +2,7 @@
 
 #include "./include/my_sdl.h"
 #include "./include/perceptron.h"
+#include "./include/my_random.h"
 
 const int32_t WIDTH = 100, HEIGHT = 100, RATIO = 6;
 
@@ -9,6 +10,7 @@ int main ( int argc, char ** argv )
 {
 	my_sdl msdl ( 600, 600, "Perceptron" );
 	perceptron pct ( WIDTH, HEIGHT );
+	my_random myran ( 0, 1 );
 
 	bool done = false;
 	SDL_Event e;
@@ -30,7 +32,7 @@ int main ( int argc, char ** argv )
 						break;
 					case SDLK_l:
 						for ( int i = 0 ; i < 100 ; ++i )
-							pct.learn ( bool(rand()%2) );
+							pct.learn ( bool( myran.get_next() ) );
 						break;
 					case SDLK_p:
 						pct.print_performance ();
