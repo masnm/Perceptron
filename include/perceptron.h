@@ -33,6 +33,7 @@ class perceptron {
 
 	public:
 		void draw_layer_sdl ( my_sdl& msdl, int32_t ratio );
+		void draw_sample_sdl ( my_sdl& msdl, int32_t ratio );
 		void print_performance ( void );
 
 	public:

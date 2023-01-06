@@ -45,7 +45,7 @@ void perceptron::sample_circle ( void )
 	clear_sample ();
 	for ( int32_t i = -radious ; i <= radious ; ++i )
 		for ( int32_t j = - radious ; j <= radious ; ++j )
-			if ( ((i*i) + (j*j)) < (radious*radious) )
+			if ( ((i*i) + (j*j)) <= (radious*radious) )
 				sample[i + center.first][j + center.second] = 1;
 
 }
@@ -109,6 +109,25 @@ void perceptron::draw_layer_sdl ( my_sdl& msdl, int32_t ratio )
 		}
 }
 
+void perceptron::draw_sample_sdl ( my_sdl& msdl, int32_t ratio )
+{
+	auto get_positive= [this]( int32_t val ) {
+		return val + abs ( WIDTH_MIN );
+	};
+	SDL_Rect rect;
+	float max_val = abs ( WIDTH_MIN ) + abs ( WIDTH_MAX );
+	rect.w = rect.h = ratio;
+	for ( int32_t i = 0 ; i < row ; ++i )
+		for ( int32_t j = 0 ; j < col ; ++j ) {
+			float val = get_positive ( sample[i][j] );
+			float red = val / max_val;
+			SDL_SetRenderDrawColor ( msdl.renderer, int(red * 255), 0, 0, 255 );
+			rect.x = i * ratio; rect.y = j*ratio;
+			// SDL_RenderDrawRect(SDL_Renderer * renderer, const SDL_Rect * rect);
+			SDL_RenderFillRects ( msdl.renderer, &rect, 1 );
+		}
+}
+
 void perceptron::print_performance ( void )
 {
 	int32_t accurate = 0;
@@ -118,7 +137,7 @@ void perceptron::print_performance ( void )
 		else sample_rectengle ();
 		if ( predict_sample () == expected ) ++accurate;
 	}
-	std::cerr << "Accuracy is : " << accurate << std::endl;
+	std::cerr << "Accuracy is : " << accurate << "%" << std::endl;
 }
 
 void perceptron::learn ( bool option )

@@ -5,6 +5,8 @@
 #include "./include/my_random.h"
 
 const int32_t WIDTH = 100, HEIGHT = 100, RATIO = 6;
+// true means layer false means sample
+bool view_layer_sample = true;
 
 int main ( int argc, char ** argv )
 {
@@ -25,10 +27,10 @@ int main ( int argc, char ** argv )
 			case SDL_KEYDOWN:
 				switch( e.key.keysym.sym ){
 					case SDLK_r:
-						pct.learn ( true );
+						pct.learn ( false );
 						break;
 					case SDLK_c:
-						pct.learn ( false );
+						pct.learn ( true );
 						break;
 					case SDLK_l:
 						for ( int i = 0 ; i < 100 ; ++i )
@@ -36,6 +38,9 @@ int main ( int argc, char ** argv )
 						break;
 					case SDLK_p:
 						pct.print_performance ();
+						break;
+					case SDLK_TAB:
+						view_layer_sample ^= true;
 						break;
 					default:
 						break;
@@ -56,7 +61,10 @@ int main ( int argc, char ** argv )
 			}
 		}
 		// SDL_RenderFillRect(SDL_Renderer * renderer, const SDL_Rect * rect);
-		pct.draw_layer_sdl ( msdl, RATIO );
+		if ( view_layer_sample == true )
+			pct.draw_layer_sdl ( msdl, RATIO );
+		else
+			pct.draw_sample_sdl ( msdl, RATIO );
 		SDL_RenderPresent ( msdl.renderer );
 	}
 
